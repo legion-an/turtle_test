@@ -1,0 +1,28 @@
+version: '3.5'
+
+services:
+
+  postgres:
+    container_name: turtle-postgres
+    image: postgres:10
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+
+  api:
+    container_name: turtle-backend
+    build: .
+    ports:
+      - "8000:8000"
+    command: >
+      bash -c "
+      python manage.py migrate &&
+      python manage.py collectstatic --no-input &&
+      python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/opt/turtle_test
+    env_file:
+      - configs/dev.env
+    depends_on:
+      - postgres

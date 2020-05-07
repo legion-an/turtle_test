@@ -1,0 +1,5 @@
+.idea/
+__pycache__
+/data/
+/static_src/
+turtle_test/settings_local.py
